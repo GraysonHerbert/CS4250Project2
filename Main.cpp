@@ -35,6 +35,14 @@ class Node{
       }
   }
   
+  void take(){
+    dollars += nodes.size();
+    
+    for(auto node : nodes){
+      node->dollars--;
+    }
+  }
+  
   void print_amount() const{
       std::cout << dollars << std::endl;
   }
