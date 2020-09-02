@@ -11,22 +11,25 @@
 #include <iostream>
 #include <vector>
 
+//This class defines the nodes for the game. They hold the stacks of dollars and form the connections between them.
 class Node{
   private:
-    int dollars;
-    std::vector<Node*> nodes;
+    int dollars; //Holds the number of dollars the node has.
+    std::vector<Node*> nodes; //Holds pointers to all nodes connected to.
   
   public:
-  
+  //Constructs a node with passed number of dollars.
   Node(int Dollars){
     dollars = Dollars;
   }
   
+  //Takes a pointer to a node passed to it and forms the connection.
   void connect_node(Node* to_connect){
     nodes.push_back(to_connect);
     to_connect->nodes.push_back(this);
   }
   
+  //Gives a dollar to all connected nodes.
   void give(){
       dollars -= nodes.size();
       
@@ -35,6 +38,7 @@ class Node{
       }
   }
   
+  //Takes a dollar from all connected nodes.
   void take(){
     dollars += nodes.size();
     
@@ -43,6 +47,7 @@ class Node{
     }
   }
   
+  //Prints the amount of dollars held by the node.
   void print_amount() const{
       std::cout << dollars << std::endl;
   }
