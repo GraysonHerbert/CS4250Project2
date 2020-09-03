@@ -85,16 +85,16 @@ int main(){
   
   do{
     std::cout << "Please input the two nodes you would like to connect: ";
-    cin >> connector;
+    std::cin >> connector;
     
-    if(!valid(nodes.zize(), connector[0], connector[1]){
+    if(!valid(nodes.size(), connector[0], connector[1])){
       std::cout << "One of your node letters is invalid. Please Try again." << std::endl; 
     }
-  }while(!valid(nodes.size(), connector[0], connector[1]);
+  }while(!valid(nodes.size(), connector[0], connector[1]));
   
   
  try{
-    
+    nodes[static_cast<int>(connector[0]) - 97].connect_node(&nodes[static_cast<int>(connector[1]) - 97]);
   }
   catch(Node::self_connect_error){
       std::cout << "You cannot connect a node to itself. Please try again." << std::endl;
