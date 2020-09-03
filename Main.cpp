@@ -17,7 +17,7 @@
 class Node{
   private:
     int dollars; //Holds the number of dollars the node has.
-    std::vector<Node*> nodes; //Holds pointers to all nodes connected to.
+    std::vector<Node*> connected_nodes; //Holds pointers to all nodes connected to.
   
   public:
   //Constructs a node with passed number of dollars.
@@ -27,39 +27,49 @@ class Node{
   
   //Takes a pointer to a node passed to it and forms the connection.
   void connect_node(Node* to_connect){
+    
+    //Checking to make sure the nodes aren't already connected, and that the passed node isn't itself.
     if(!connected(to_connect) && to_connect != this){
-      nodes.push_back(to_connect);
-      to_connect->nodes.push_back(this);
+      //Connecting the nodes
+      connected_nodes.push_back(to_connect);
+      to_connect->connected_nodes.push_back(this);
     }
+    //Checking if itself was passed into the function.
     else if(to_connect == this){
-        throw self_connect_error();
+      //Throwing the exception
+      throw self_connect_error();
     }
+    //Catching the case where the nodes are already connected
     else{
+      //Throwing the exception
       throw already_connected_error();
     }
   }
   
   //Gives a dollar to all connected nodes.
   void give(){
-      dollars -= nodes.size();
-      
-      for(auto node : nodes){
-          node->dollars++;
+    dollars -= connected_nodes.size();
+    
+    //Iterates through the list of connected nodes giving them each a dollar
+    for(auto node : connected_nodes){
+      node->dollars++;
       }
   }
   
   //Takes a dollar from all connected nodes.
   void take(){
-    dollars += nodes.size();
+    dollars += connected_nodes.size();
     
-    for(auto node : nodes){
+    //Iterates through the nodes taking a dollar from each.
+    for(auto node : connected_nodes){
       node->dollars--;
     }
   }
   
   //Checks if the node passed in is already connected. If so returns true, else false
   bool connected(Node* to_check) const{
-    for(auto node : nodes){
+    //Iterates through the nodes searching for a matching node
+    for(auto node : connected_nodes){
       if(node == to_check){
         return true; 
       }
@@ -80,25 +90,29 @@ bool valid(int, char, char);
 
 int main(){
 
-  std::vector<Node*> nodes;
+  std::vector<Node> nodes;
   std::string connector = "";
   
+  //Prompts the user to input the connection command and repeats until both letters are valid
   do{
     std::cout << "Please input the two nodes you would like to connect: ";
     std::cin >> connector;
     
+    //If one of the letters is invalid prints and error message
     if(!valid(nodes.size(), connector[0], connector[1])){
       std::cout << "One of your node letters is invalid. Please Try again." << std::endl; 
     }
   }while(!valid(nodes.size(), connector[0], connector[1]));
   
-  
+  //Attempts to connect the nodes in the commands. If an error is thrown it will be caught.
  try{
     nodes[static_cast<int>(connector[0]) - 97].connect_node(&nodes[static_cast<int>(connector[1]) - 97]);
   }
+  //Prints an error message for a self connection error.
   catch(Node::self_connect_error){
       std::cout << "You cannot connect a node to itself. Please try again." << std::endl;
   }
+  //Prints an error message for a redundant connection error
   catch(Node::already_connected_error){
       std::cout << "You cannot have more than one connection between two nodes. Please try again << std::endl";
   }
@@ -106,9 +120,17 @@ int main(){
   return EXIT_SUCCESS;
 }
 
+//Tests the validity of the two node letters. Returns true if they are valid, false if they are not
 bool valid(int num_of_nodes, char node_1, char node_2){
+  //Converting all letters to lowercase
    node_1 = tolower(node_1);
    node_2 = tolower(node_2);
   
+  //If one of them is not a letter it returns false.
+  if(!isalpha(node_1) || !isalpha(node_2)){
+       return false;
+   }
+  
+  //If they are both letters within the valid set of letters it returns true, else returns false;
   return static_cast<int>(node_1) - 97 < num_of_nodes && static_cast<int>(node_2) - 97 < num_of_nodes;
 }
