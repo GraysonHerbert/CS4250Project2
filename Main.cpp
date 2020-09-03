@@ -35,7 +35,7 @@ class Node{
         throw self_connect_error();
     }
     else{
-      throw already_connect_error();
+      throw already_connected_error();
     }
   }
   
@@ -83,9 +83,14 @@ int main(){
   std::vector<Node*> nodes;
   std::string connector = "";
   
-  std::cout << "Please input the two nodes you would like to connect: ";
-  cin >> connector;
-  
+  do{
+    std::cout << "Please input the two nodes you would like to connect: ";
+    cin >> connector;
+    
+    if(!valid(nodes.zize(), connector[0], connector[1]){
+      std::cout << "One of your node letters is invalid. Please Try again." << std::endl; 
+    }
+  }while(!valid(nodes.size(), connector[0], connector[1]);
   
   
  try{
@@ -105,5 +110,5 @@ bool valid(int num_of_nodes, char node_1, char node_2){
    node_1 = tolower(node_1);
    node_2 = tolower(node_2);
   
-  return static_cast<int>(node_1) - 97 > num_of_nodes && static_cast<int>(node_2) - 97 > num_of_nodes;
+  return static_cast<int>(node_1) - 97 < num_of_nodes && static_cast<int>(node_2) - 97 < num_of_nodes;
 }
