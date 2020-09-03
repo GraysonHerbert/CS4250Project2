@@ -25,12 +25,15 @@ class Node{
   
   //Takes a pointer to a node passed to it and forms the connection.
   void connect_node(Node* to_connect){
-    if(!connected(to_connect) && to_connect != self){
+    if(!connected(to_connect) && to_connect != this){
       nodes.push_back(to_connect);
       to_connect->nodes.push_back(this);
     }
+    else if(to_connect == this){
+        throw self_connect_error();
+    }
     else{
-      throw Already_connected_error();
+      throw already_connect_error();
     }
   }
   
