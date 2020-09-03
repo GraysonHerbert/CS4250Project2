@@ -10,6 +10,8 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
+#include <cctype>
 
 //This class defines the nodes for the game. They hold the stacks of dollars and form the connections between them.
 class Node{
@@ -74,11 +76,34 @@ class Node{
   class self_connect_error{};
 };
 
+bool valid(int, char, char);
+
 int main(){
 
-
   std::vector<Node*> nodes;
+  std::string connector = "";
   
- 
+  std::cout << "Please input the two nodes you would like to connect: ";
+  cin >> connector;
+  
+  
+  
+ try{
+    
+  }
+  catch(Node::self_connect_error){
+      std::cout << "You cannot connect a node to itself. Please try again." << std::endl;
+  }
+  catch(Node::already_connected_error){
+      std::cout << "You cannot have more than one connection between two nodes. Please try again << std::endl";
+  }
+  
   return EXIT_SUCCESS;
+}
+
+bool valid(int num_of_nodes, char node_1, char node_2){
+   node_1 = tolower(node_1);
+   node_2 = tolower(node_2);
+  
+  return static_cast<int>(node_1) - 97 > num_of_nodes && static_cast<int>(node_2) - 97 > num_of_nodes;
 }
