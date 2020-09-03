@@ -25,8 +25,13 @@ class Node{
   
   //Takes a pointer to a node passed to it and forms the connection.
   void connect_node(Node* to_connect){
-    nodes.push_back(to_connect);
-    to_connect->nodes.push_back(this);
+    if(!connected(to_connect) && to_connect != self){
+      nodes.push_back(to_connect);
+      to_connect->nodes.push_back(this);
+    }
+    else{
+      throw Already_connected_error();
+    }
   }
   
   //Gives a dollar to all connected nodes.
@@ -47,10 +52,23 @@ class Node{
     }
   }
   
+  //Checks if the node passed in is already connected. If so returns true, else false
+  bool connected(Node* to_check) const{
+    for(auto node : nodes){
+      if(node == to_check){
+        return true; 
+      }
+    }
+    return false;
+  }
+  
   //Prints the amount of dollars held by the node.
   void print_amount() const{
       std::cout << dollars << std::endl;
   }
+  
+  class already_connected_error{};
+  class self_connect_error{};
 };
 
 int main(){
