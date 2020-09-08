@@ -120,15 +120,13 @@ while(running){
             running = false;
             break;
         }
-    }while(!valid(nodes.size(), connector[0], connector[1]));
     
         //If one of the letters is invalid prints an error message
-        if(!valid(nodes.size(), connector[0], connector[1]) && connector != "quit"){
-        std::cout << "One of your node letters is invalid. Please Try again.\n";
-      
-        continue;
-    
-  
+        if(!valid(nodes.size(), connector[0], connector[1])/* && connector != "quit"*/){
+            std::cout << "One of your node letters is invalid. Please Try again.\n";
+        }
+    }while(!valid(nodes.size(), connector[0], connector[1]));
+       
         //Attempts to connect the nodes in the commands. If an error is thrown it will be caught.
         try{
             nodes[static_cast<int>(connector[0]) - 97].connect_node(&nodes[static_cast<int>(connector[1]) - 97]);
@@ -142,8 +140,8 @@ while(running){
         std::cout << "You cannot have more than one connection between two nodes. Please try again.\n";
       
         }
+        
     }
-}
     
   return EXIT_SUCCESS;
 }
