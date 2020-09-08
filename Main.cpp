@@ -92,6 +92,7 @@ int main(){
 
   std::vector<Node> nodes;
   int num_of_nodes, dollars;
+  bool running = true;
   std::string connector = "";
   
   do{
@@ -110,36 +111,40 @@ int main(){
       nodes.push_back(Node(dollars));
   }
   
-  //Prompts the user to input the connection command and repeats until both letters are valid
-  do{
-    std::cout << "Please input the two nodes you would like to connect: ";
-    std::cin >> connector;
+while(running){
+    //Prompts the user to input the connection command and repeats until both letters are valid
+    do{
+        std::cout << "Please input the two nodes you would like to connect: ";
+        std::cin >> connector;
+        if(connector == "quit"){
+            running = false;
+            break;
+        }
+    }while(!valid(nodes.size(), connector[0], connector[1]));
     
-    //If one of the letters is invalid prints an error message
-    if(!valid(nodes.size(), connector[0], connector[1])){
-      std::cout << "One of your node letters is invalid. Please Try again.\n";
+        //If one of the letters is invalid prints an error message
+        if(!valid(nodes.size(), connector[0], connector[1]) && connector != "quit"){
+        std::cout << "One of your node letters is invalid. Please Try again.\n";
       
-      continue;
+        continue;
     
   
-    //Attempts to connect the nodes in the commands. If an error is thrown it will be caught.
-    try{
-        nodes[static_cast<int>(connector[0]) - 97].connect_node(&nodes[static_cast<int>(connector[1]) - 97]);
+        //Attempts to connect the nodes in the commands. If an error is thrown it will be caught.
+        try{
+            nodes[static_cast<int>(connector[0]) - 97].connect_node(&nodes[static_cast<int>(connector[1]) - 97]);
+        }
+        //Prints an error message for a self connection error.
+        catch(Node::self_connect_error){
+        std::cout << "You cannot connect a node to itself. Please try again.\n";
+        }
+        //Prints an error message for a redundant connection error
+        catch(Node::already_connected_error){
+        std::cout << "You cannot have more than one connection between two nodes. Please try again.\n";
+      
+        }
     }
-    //Prints an error message for a self connection error.
-    catch(Node::self_connect_error){
-      std::cout << "You cannot connect a node to itself. Please try again.\n";
-      continue;
-    }
-    //Prints an error message for a redundant connection error
-    catch(Node::already_connected_error){
-      std::cout << "You cannot have more than one connection between two nodes. Please try again.\n";
-      continue;
-    }
-  
-    }
-  }while(!valid(nodes.size(), connector[0], connector[1]));
-  
+}
+    
   return EXIT_SUCCESS;
 }
 
