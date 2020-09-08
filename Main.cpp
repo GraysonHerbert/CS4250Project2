@@ -91,31 +91,54 @@ bool valid(int, char, char);
 int main(){
 
   std::vector<Node> nodes;
+  int num_of_nodes, dollars;
   std::string connector = "";
+  
+  do{
+  std::cout << "How many nodes would you like to create? (2-7) ";
+  std::cin >> num_of_nodes;
+  
+  if(num_of_nodes < 2 || num_of_nodes > 7){
+      std::cout << "You must enter an integer between 2 and 7.\n";
+  }
+  } while(num_of_nodes < 2 || num_of_nodes > 7);
+  
+  for(int i = 0; i < num_of_nodes; i++){
+      std::cout << "How many dollars should node " << i + 1 << " have? ";
+      std::cin >> dollars;
+      
+      nodes.push_back(Node(dollars));
+  }
   
   //Prompts the user to input the connection command and repeats until both letters are valid
   do{
     std::cout << "Please input the two nodes you would like to connect: ";
     std::cin >> connector;
     
-    //If one of the letters is invalid prints and error message
+    //If one of the letters is invalid prints an error message
     if(!valid(nodes.size(), connector[0], connector[1])){
-      std::cout << "One of your node letters is invalid. Please Try again." << std::endl; 
+      std::cout << "One of your node letters is invalid. Please Try again.\n";
+      
+      continue;
+    
+  
+    //Attempts to connect the nodes in the commands. If an error is thrown it will be caught.
+    try{
+        nodes[static_cast<int>(connector[0]) - 97].connect_node(&nodes[static_cast<int>(connector[1]) - 97]);
+    }
+    //Prints an error message for a self connection error.
+    catch(Node::self_connect_error){
+      std::cout << "You cannot connect a node to itself. Please try again.\n";
+      continue;
+    }
+    //Prints an error message for a redundant connection error
+    catch(Node::already_connected_error){
+      std::cout << "You cannot have more than one connection between two nodes. Please try again.\n";
+      continue;
+    }
+  
     }
   }while(!valid(nodes.size(), connector[0], connector[1]));
-  
-  //Attempts to connect the nodes in the commands. If an error is thrown it will be caught.
- try{
-    nodes[static_cast<int>(connector[0]) - 97].connect_node(&nodes[static_cast<int>(connector[1]) - 97]);
-  }
-  //Prints an error message for a self connection error.
-  catch(Node::self_connect_error){
-      std::cout << "You cannot connect a node to itself. Please try again." << std::endl;
-  }
-  //Prints an error message for a redundant connection error
-  catch(Node::already_connected_error){
-      std::cout << "You cannot have more than one connection between two nodes. Please try again << std::endl";
-  }
   
   return EXIT_SUCCESS;
 }
