@@ -25,6 +25,10 @@ class Node{
     dollars = Dollars;
   }
   
+  int get_dollars() const{
+      return dollars;
+  }
+  
   //Takes a pointer to a node passed to it and forms the connection.
   void connect_node(Node* to_connect){
     
@@ -87,13 +91,14 @@ class Node{
 };
 
 bool valid(int, char, char);
+bool won(std::vector<Node>);
 
 int main(){
 
   std::vector<Node> nodes;
   int num_of_nodes, dollars;
   bool running = true;
-  std::string connector = "";
+  std::string connector = "", input = "";
   
   do{
   std::cout << "How many nodes would you like to create? (2-7) ";
@@ -143,6 +148,12 @@ while(running){
         
     }
     
+    do{
+        std::cin >> input;
+        
+        
+    } while(tolower(input) != 'q');
+    
   return EXIT_SUCCESS;
 }
 
@@ -159,4 +170,14 @@ bool valid(int num_of_nodes, char node_1, char node_2){
   
   //If they are both letters within the valid set of letters it returns true, else returns false;
   return static_cast<int>(node_1) - 97 < num_of_nodes && static_cast<int>(node_2) - 97 < num_of_nodes;
+}
+
+bool won(std::vector<Node> nodes){
+    for(auto node : nodes)
+    {
+        if(node.get_dollars() < 0){
+            return false;
+        }
+    }
+    return true;
 }
