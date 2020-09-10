@@ -139,7 +139,11 @@ int main(){
             std::cout << "Your input is not an integer, it must be an integer. Please try again.\n";
             continue;
         }
-    } while(num_of_edges < num_of_nodes - 1);
+
+        if(num_of_edges < num_of_nodes - 1 || num_of_edges > max_edges(num_of_nodes)){
+            std::cout << "Your input was outside the valid range. Please enter an integer in the range: (" << num_of_nodes - 1 << "-" << max_edges(num_of_nodes) << ")\n";
+        }
+    } while(num_of_edges < num_of_nodes - 1 || num_of_edges > max_edges(num_of_nodes));
 
     //Iterates through the nodes and prompts the user for the number of dollars for each.
     for(int i = 0; i < num_of_nodes; i++){
@@ -150,6 +154,7 @@ int main(){
         }
         catch(std::invalid_argument){
             std::cout << "Your input is not an integer, it must be an integer. Please try again.\n";
+            i--;
             continue;
         }
 
@@ -163,14 +168,13 @@ int main(){
         do{
             std::cout << "Please input the two nodes you would like to connect: ";
             std::cin >> connector;
-            if(connector == "quit" && num_of_nodes > num_of_edges){
+            if(num_of_nodes > num_of_edges){
                 break;
             }
 
             //If one of the letters is invalid prints an error message
-            if(!valid(nodes.size(), connector[0]) || !valid(nodes.size(), connector[1])/* && connector != "quit"*/){
+            if(!valid(nodes.size(), connector[0]) || !valid(nodes.size(), connector[1])){
                 std::cout << "One of your node letters is invalid. Please Try again.\n";
-                i--;
             }
         }while(!valid(nodes.size(), connector[0]) || !valid(nodes.size(), connector[1]));
 
@@ -217,7 +221,9 @@ int main(){
             std::cout << "Congratulations! You won! You may continue to play or input q to quit.\n";
         }
 
-        turn_counter++;
+        if(input != 'q') {
+            turn_counter++;
+        }
     } while(tolower(input) != 'q');
 
     std::cout << "Final node amounts:\n";
