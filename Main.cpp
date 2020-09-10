@@ -129,7 +129,6 @@ int main(){
         }
     } while(num_of_nodes < 2 || num_of_nodes > 7);
 
-    //Gets the number of edges to make. Continues until a valid input is acquired.
     do{
         std::cout << "How many edges do you want? You must use at least " << num_of_nodes - 1 << " and at most " << max_edges(num_of_nodes) << ' ';
         std::cin >> numeric_input;
@@ -159,9 +158,11 @@ int main(){
             continue;
         }
 
+
         //Constructs the node with the given dollars and pushes it onto the back of the vector
         nodes.push_back(Node(dollars));
     }
+
 
     //Handles node connection selection stops when user inputs "quit"
     for(int i = 0; i < num_of_edges; i++){
@@ -169,9 +170,6 @@ int main(){
         do{
             std::cout << "Please input the two nodes you would like to connect: ";
             std::cin >> connector;
-            if(num_of_nodes > num_of_edges){
-                break;
-            }
 
             //If one of the letters is invalid prints an error message
             if(!valid(nodes.size(), connector[0]) || !valid(nodes.size(), connector[1])){
