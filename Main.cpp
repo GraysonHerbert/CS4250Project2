@@ -93,6 +93,7 @@ public:
 bool valid(int, char);
 bool won(std::vector<Node>);
 void print_info(std::vector<Node>);
+int max_edges(int);
 
 int main(){
 
@@ -100,9 +101,11 @@ int main(){
     int num_of_nodes; //Stores the number of nodes
     int dollars; //Holds the input for how many dollars should be in each node
     int turn_counter = 0; //Counts the total number of turns taken.
-    bool running = true; //Used for a loop condition
+    int num_of_edges = 0; //Holds the number of edges
     std::string connector = ""; //Holds the input for which nodes to connect
     char input, input_2; //These hold input characters for selecting nodes and giving and taking.
+
+    std::cout << 
 
     //This loop repeats until the user enters a proper number of nodes (2-7)
     do{
@@ -114,6 +117,11 @@ int main(){
         }
     } while(num_of_nodes < 2 || num_of_nodes > 7);
 
+    do{
+        std::cout << "How many edges do you want? You must use at least " << num_of_nodes - 1 << " and at most " << max_edges(num_of_nodes) << ' ';
+        std::cin >> num_of_edges;
+    } while(num_of_edges < num_of_nodes - 1);
+
     //Iterates through the nodes and prompts the user for the number of dollars for each.
     for(int i = 0; i < num_of_nodes; i++){
         std::cout << "How many dollars should node " << i + 1 << " have? ";
@@ -124,19 +132,19 @@ int main(){
     }
 
     //Handles node connection selection stops when user inputs "quit"
-    while(running){
+    for(int i = 0; i < num_of_edges; i++){
         //Prompts the user to input the connection command and repeats until both letters are valid
         do{
             std::cout << "Please input the two nodes you would like to connect: ";
             std::cin >> connector;
-            if(connector == "quit"){
-                running = false;
+            if(connector == "quit" && num_of_nodes > num_of_edges){
                 break;
             }
 
             //If one of the letters is invalid prints an error message
             if(!valid(nodes.size(), connector[0]) || !valid(nodes.size(), connector[1])/* && connector != "quit"*/){
                 std::cout << "One of your node letters is invalid. Please Try again.\n";
+                i--;
             }
         }while(!valid(nodes.size(), connector[0]) || !valid(nodes.size(), connector[1]));
 
@@ -147,11 +155,12 @@ int main(){
             //Prints an error message for a self connection error.
         catch(Node::self_connect_error){
             std::cout << "You cannot connect a node to itself. Please try again.\n";
+            i--;
         }
             //Prints an error message for a redundant connection error
         catch(Node::already_connected_error){
             std::cout << "You cannot have more than one connection between two nodes. Please try again.\n";
-
+            i--;
         }
 
     }
@@ -193,22 +202,23 @@ int main(){
     return EXIT_SUCCESS;
 }
 
-//Tests the validity of the two node letters. Returns true if they are valid, false if they are not
-bool valid(int num_of_nodes, char node_1){
-    //Converting all letters to lowercase
-    node_1 = tolower(node_1);
+//Tests the validity of the node letter. Returns true if valid, false if invalid
+bool valid(int num_of_nodes, char node_char){
+    //Converting lowercase
+    node_char = tolower(node_char);
 
-    //If one of them is not a letter it returns false.
-    if(!isalpha(node_1)){
+    //If not a letter returns false.
+    if(!isalpha(node_char)){
         return false;
     }
 
-    //If they are both letters within the valid set of letters it returns true, else returns false;
-    return static_cast<int>(node_1) - 97 < num_of_nodes;
+    //If within the valid set of letters returns true, else returns false;
+    return static_cast<int>(node_char) - 97 < num_of_nodes;
 }
 
 //Checks to see if the user won.
 bool won(std::vector<Node> nodes){
+    //Iterates through the nodes making sure they are all >= 0
     for(auto node : nodes)
     {
         if(node.get_dollars() < 0){
@@ -220,7 +230,18 @@ bool won(std::vector<Node> nodes){
 
 //Prints each node and the number of dollars they have.
  void print_info(std::vector<Node> nodes){
+    //Iterates through the nodes printing information for each
     for(int i = 0; i < nodes.size(); i++){
         std::cout << "Node " << static_cast<char>(i + 97) << " has " << nodes[i].get_dollars() << " dollars.\n";
     }
+}
+
+//Calculates the maximum nubmer of edges based on number of nodes
+int max_edges(int n){
+    int total = 1;
+    for(int i = 2; i < n; i++){
+        total += i;
+    }
+
+    return total;
 }
