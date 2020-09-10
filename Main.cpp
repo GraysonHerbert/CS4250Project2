@@ -7,6 +7,7 @@
 //Date: 9/10/2020
 //Description: A game to play including a graph and stacks of dollars. The goal is to get every stack with positive dollars.
 //Resources: N/A
+//Language: C++
 
 #include <iostream>
 #include <vector>
@@ -91,9 +92,9 @@ public:
 };
 
 bool valid(int, char); //Checks for validity of the character for a node
-bool won(std::vector<Node>); 
-void print_info(std::vector<Node>);
-int max_edges(int);
+bool won(std::vector<Node>); //Checks if the player has won
+void print_info(std::vector<Node>); //Prints the information on node values
+int max_edges(int); //Calculates the maximum number of edges
 
 int main(){
 
@@ -103,6 +104,7 @@ int main(){
     int turn_counter = 0; //Counts the total number of turns taken.
     int num_of_edges = 0; //Holds the number of edges
     std::string connector = ""; //Holds the input for which nodes to connect
+    std::string numeric_input = "";
     char input, input_2; //These hold input characters for selecting nodes and giving and taking.
 
     std::cout << "This is a game called the dollar game. You will give instructions to construct a graph, then assign" <<
@@ -113,7 +115,14 @@ int main(){
     //This loop repeats until the user enters a proper number of nodes (2-7)
     do{
         std::cout << "How many nodes would you like to create? (2-7) ";
-        std::cin >> num_of_nodes;
+        std::cin >> numeric_input;
+        try {
+            num_of_nodes = stoi(numeric_input);
+        }
+        catch(std::invalid_argument){
+            std::cout << "Your input is not an integer, it must be an integer. Please try again.\n";
+            continue;
+        }
 
         if(num_of_nodes < 2 || num_of_nodes > 7){
             std::cout << "You must enter an integer between 2 and 7.\n";
@@ -122,13 +131,27 @@ int main(){
 
     do{
         std::cout << "How many edges do you want? You must use at least " << num_of_nodes - 1 << " and at most " << max_edges(num_of_nodes) << ' ';
-        std::cin >> num_of_edges;
+        std::cin >> numeric_input;
+        try {
+            num_of_edges = stoi(numeric_input);
+        }
+        catch(std::invalid_argument){
+            std::cout << "Your input is not an integer, it must be an integer. Please try again.\n";
+            continue;
+        }
     } while(num_of_edges < num_of_nodes - 1);
 
     //Iterates through the nodes and prompts the user for the number of dollars for each.
     for(int i = 0; i < num_of_nodes; i++){
         std::cout << "How many dollars should node " << i + 1 << " have? ";
-        std::cin >> dollars;
+        std::cin >> numeric_input;
+        try {
+            dollars = stoi(numeric_input);
+        }
+        catch(std::invalid_argument){
+            std::cout << "Your input is not an integer, it must be an integer. Please try again.\n";
+            continue;
+        }
 
         //Constructs the node with the given dollars and pushes it onto the back of the vector
         nodes.push_back(Node(dollars));
