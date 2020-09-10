@@ -199,9 +199,19 @@ int main(){
         std::cout << "Select a node (a-" << static_cast<char>(num_of_nodes + 96) << ") or input q to quit. ";
         std::cin >> input;
 
+        if(!isalpha(input)){
+            std::cout << "Your input was not a letter. It should be a letter" << std::endl;
+            continue;
+        }
+
         if(valid(num_of_nodes, input)){
             std::cout << "Would you like that node to give (g) or take (t)? ";
             std::cin >> input_2;
+
+            if(!isalpha(input_2)){
+                std::cout << "Your input was not a letter. It should be a letter" << std::endl;
+                continue;
+            }
 
             if(input_2 == 'g'){
                 nodes[static_cast<int>(input) - 97].give();
