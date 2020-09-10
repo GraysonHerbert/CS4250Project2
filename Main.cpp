@@ -5,7 +5,7 @@
 //Email: gdhxnw@umsystem.edu, essweinjacob@gmail.com
 //Course: 4250-001
 //Date: 9/10/2020
-//Description: A game to play including a graph and stacks of dollars. The goal is to get every stack with positive dollars.
+//Description: A game to play including a graph and stacks of dollars. The goal is to get every stack with positive or zero dollars.
 //Resources: N/A
 //Language: C++
 
@@ -139,7 +139,7 @@ int main(){
             std::cout << "Your input is not an integer, it must be an integer. Please try again.\n";
             continue;
         }
-        
+
         if(num_of_edges < num_of_nodes - 1 || num_of_edges > max_edges(num_of_nodes)){
             std::cout << "Your input was outside the valid range. Please enter an integer in the range: (" << num_of_nodes - 1 << "-" << max_edges(num_of_nodes) << ")\n";
         }
@@ -179,7 +179,7 @@ int main(){
 
         //Attempts to connect the nodes in the commands. If an error is thrown it will be caught.
         try{
-            //Converting the characters to the integer position in the vector of nodes. a = 0, b = 1, . . . 
+            //Converting the characters to the integer position in the vector of nodes. a = 0, b = 1, . . .
             //Then connecting the nodes to each other.
             nodes[static_cast<int>(connector[0]) - 97].connect_node(&nodes[static_cast<int>(connector[1]) - 97]);
         }
