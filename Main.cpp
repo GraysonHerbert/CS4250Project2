@@ -129,6 +129,7 @@ int main(){
         }
     } while(num_of_nodes < 2 || num_of_nodes > 7);
 
+    //Gets the number of edges to make. Continues until a valid input is acquired.
     do{
         std::cout << "How many edges do you want? You must use at least " << num_of_nodes - 1 << " and at most " << max_edges(num_of_nodes) << ' ';
         std::cin >> numeric_input;
