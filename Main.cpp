@@ -90,8 +90,8 @@ public:
     class self_connect_error{};
 };
 
-bool valid(int, char);
-bool won(std::vector<Node>);
+bool valid(int, char); //Checks for validity of the character for a node
+bool won(std::vector<Node>); 
 void print_info(std::vector<Node>);
 int max_edges(int);
 
@@ -105,7 +105,10 @@ int main(){
     std::string connector = ""; //Holds the input for which nodes to connect
     char input, input_2; //These hold input characters for selecting nodes and giving and taking.
 
-    std::cout << 
+    std::cout << "This is a game called the dollar game. You will give instructions to construct a graph, then assign" <<
+                 "values to each node. Your goal is to get all nodes to have 0 or more dollars by giving and taking " <<
+                 "from nodes. Good luck!\n";
+
 
     //This loop repeats until the user enters a proper number of nodes (2-7)
     do{
@@ -236,9 +239,11 @@ bool won(std::vector<Node> nodes){
     }
 }
 
-//Calculates the maximum nubmer of edges based on number of nodes
+//Calculates the maximum number of edges based on number of nodes
 int max_edges(int n){
     int total = 1;
+
+    //Sums up the total
     for(int i = 2; i < n; i++){
         total += i;
     }
