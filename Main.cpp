@@ -139,7 +139,7 @@ int main(){
             std::cout << "Your input is not an integer, it must be an integer. Please try again.\n";
             continue;
         }
-
+        
         if(num_of_edges < num_of_nodes - 1 || num_of_edges > max_edges(num_of_nodes)){
             std::cout << "Your input was outside the valid range. Please enter an integer in the range: (" << num_of_nodes - 1 << "-" << max_edges(num_of_nodes) << ")\n";
         }
@@ -179,6 +179,8 @@ int main(){
 
         //Attempts to connect the nodes in the commands. If an error is thrown it will be caught.
         try{
+            //Converting the characters to the integer position in the vector of nodes. a = 0, b = 1, . . . 
+            //Then connecting the nodes to each other.
             nodes[static_cast<int>(connector[0]) - 97].connect_node(&nodes[static_cast<int>(connector[1]) - 97]);
         }
             //Prints an error message for a self connection error.
@@ -196,6 +198,7 @@ int main(){
 
     //This is the game loop. Ends when the user inputs "q" or "Q"
     do{
+        //Converts the integer position of the node in the vector to the corresponding character. a = 0, b = 1, . . .
         std::cout << "Select a node (a-" << static_cast<char>(num_of_nodes + 96) << ") or input q to quit. ";
         std::cin >> input;
 
@@ -214,9 +217,11 @@ int main(){
             }
 
             if(input_2 == 'g'){
+                //Converting the character to an integer such that a = 0, b = 1, . . .
                 nodes[static_cast<int>(input) - 97].give();
             }
             else if(input_2 == 't'){
+                //Converting the character to an integer such that a = 0, b = 1, . . .
                 nodes[static_cast<int>(input) - 97].take();
             }
             else{
@@ -254,6 +259,7 @@ bool valid(int num_of_nodes, char node_char){
     }
 
     //If within the valid set of letters returns true, else returns false;
+    //Converting the character to an integer such that a = 0, b = 1, ... , z = 25
     return static_cast<int>(node_char) - 97 < num_of_nodes;
 }
 
